@@ -4,11 +4,17 @@ export render, setdisplay, unsetdisplay, getdisplay, current_input, Media, @medi
         @render
 
 # Some type system utils
-
-distance(S, T) =
-  !(S <: T) ? Inf :
-  S == T ? 0. :
-  1 + distance(super(S), T)
+if VERSION > v"0.5-"
+  distance(S, T) =
+    !(S <: T) ? Inf :
+    S == T ? 0. :
+    1 + distance(supertype(S), T)  
+else
+  distance(S, T) =
+    !(S <: T) ? Inf :
+    S == T ? 0. :
+    1 + distance(super(S), T)
+end
 
 nearest(T, U, V) =
   distance(T, U) < distance(T, V) ? U : V
